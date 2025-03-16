@@ -6,6 +6,7 @@ import { useRouter } from "expo-router";
 import useFetch from "@/services/useFetch";
 import { getTrendingMovies } from "@/services/services";
 import MovieCard from "@/components/MovieCard";
+import LoadingSkeleton from "@/components/LoadingSkeleton";
 
 
 export default function Index() {
@@ -25,7 +26,7 @@ export default function Index() {
         contentContainerStyle={{ minHeight: "100%", paddingBottom: "18%" }}>
         <Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto" />
         {moviesLoading ? (
-          <ActivityIndicator size="large" color="#0000ff" className="mt-10 self-center" />
+          <LoadingSkeleton />
         ) : moviesError ? (
           <Text>An error occured. {moviesError?.message}</Text>
         ) : (<View className="mt-5 flex-1">
