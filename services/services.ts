@@ -8,14 +8,14 @@ export const searchMovie = async (query: string, searchField:string) => {
         const data = await response.json();
 
         if (data.Response === 'False') {
-            console.error('No movies found:', data.Error);
-            return [];
+            // console.error(`No movies found for ${query}:`, data.Error);
+            return "not found";
         }
         if (searchField=="s") return data.Search;
-        if (searchField=="t") return data
+        if (searchField=="t") return data;
     } catch (error) {
         console.error('Error searching movies:', error);
-        return [];
+        return "not found";
     }
 };
 
@@ -37,7 +37,9 @@ export const getTrendingMovies = async (quantity:number) => {
         const updatedMovies = []
         for (let movie of movies) {
             const movieData = await searchMovie(movie.movie.title,"t");
-            updatedMovies.push(movieData)
+            if (movieData!=="not found"){
+                updatedMovies.push(movieData)
+            }
         }
         return updatedMovies;
     } catch (error) {

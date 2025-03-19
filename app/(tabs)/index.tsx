@@ -7,17 +7,14 @@ import useFetch from "@/services/useFetch";
 import { getTrendingMovies } from "@/services/services";
 import MovieCard from "@/components/MovieCard";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
+import { useContext, useState } from "react";
+import moviesContext from "@/services/context";
 
 
 export default function Index() {
   const router = useRouter();
-  let { data: movies, loading: moviesLoading, error: moviesError } = useFetch(() => getTrendingMovies(45));
-  if (movies ) {
-    for (let movie of movies) {
-      if (movie.Poster=="N/A") {
-        movies.splice(movies.indexOf(movie),1)
-      }
-  }}
+  const {movies,moviesLoading,moviesError} = useContext(moviesContext);
+  const [query,setQuery] = useState("")
   return (
     <View className="bg-primary flex-1">
       <Image source={images.bg} className="absolute w-full z-0" />
@@ -30,7 +27,7 @@ export default function Index() {
         ) : moviesError ? (
           <Text>An error occured. {moviesError?.message}</Text>
         ) : (<View className="mt-5 flex-1">
-          <SearchBar onPress={() => router.push("/search")} />
+          <SearchBar onPress={() => router.push("/search")} userQuery="" setUserQuery={setQuery} autofocus={false}/>
           <>
             <Text className="text-white text-lg font-bold mt-5 mb-3">
               Latest Movies
